@@ -1,13 +1,14 @@
 use std::ops;
+use std::ops::AddAssign;
 
-
-#[derive(Debug, PartialEq)]
+// We derive from PartialEq in order to use assert_eqs in tests.
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub struct Vector2<T> {
     pub x: T,
     pub y: T,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub struct Vector3<T> {
     pub x: T,
     pub y: T,
@@ -20,6 +21,13 @@ impl<T> ops::Add for Vector2<T> where T: Copy + ops::Add<T, Output=T> {
     type Output = Vector2<T>;
     fn add(self, rhs: Vector2<T>) -> Vector2<T> {
         Vector2 { x: self.x + rhs.x, y: self.y + rhs.y }
+    }
+}
+
+impl<T> ops::AddAssign for Vector2<T> where T: AddAssign {
+    fn add_assign(&mut self, rhs: Vector2<T>) {
+        self.x += rhs.x;
+        self.y += rhs.y;
     }
 }
 

@@ -1,10 +1,13 @@
 use std::ops;
 
+
+#[derive(Debug, PartialEq)]
 pub struct Vector2<T> {
     pub x: T,
     pub y: T,
 }
 
+#[derive(Debug, PartialEq)]
 pub struct Vector3<T> {
     pub x: T,
     pub y: T,
@@ -29,7 +32,9 @@ mod vector2_tests {
         let v1 = Vector2 { x: 2.0f32, y: 3.0f32 };
         let v2 = Vector2 { x: 1.0f32, y: -1.0f32 };
         let v3 = Vector2 { x: 3.0f32, y: 2.0f32 };
+        let v4 = Vector2 { x: 0.0f32, y: 0.0f32 };
 
         assert_eq!(v1 + v2, v3);
+        assert_ne!(v1 + v2, v4);
     }
 }

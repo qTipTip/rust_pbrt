@@ -1,4 +1,7 @@
-use core::geometry::Vector2;
+mod core;
+
+use crate::core::geometry::Vector2;
+
 fn main() {
     println!("Hello, world!");
 

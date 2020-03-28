@@ -1,5 +1,5 @@
 use std::ops;
-use std::num;
+use num_traits::Float;
 
 // We derive from PartialEq in order to use assert_eqs in tests.
 #[derive(Debug, PartialEq, Copy, Clone)]
@@ -9,12 +9,16 @@ pub struct Vector2<T> {
 }
 
 impl<T> Vector2<T> {
-    pub fn length_squared(self) -> T where T: ops::Mult<T, Output=T> + ops::Add<T, Output=T> + Copy {
+    pub fn length_squared(self) -> T where T: ops::Mul<T, Output=T> + ops::Add<T, Output=T> + Copy {
         self.x * self.x + self.y * self.y
     }
 
-    pub fn length(self) -> T where T: num::Float {
+    pub fn length(self) -> T where T: num_traits::Float {
         self.length_squared().sqrt()
+    }
+
+    pub fn has_nans(self) -> bool where T: num_traits::Float {
+        self.x.is_nan() || self.y.is_nan()
     }
 }
 
@@ -61,6 +65,7 @@ impl<T> ops::MulAssign<T> for Vector2<T> where T: Copy + ops::MulAssign {
 #[cfg(test)]
 mod vector2_tests {
     use crate::core::geometry::Vector2;
+    use num_traits::Float;
 
     #[test]
     fn test_add() {
@@ -120,6 +125,24 @@ mod vector2_tests {
         v1 *= constant;
         assert_eq!(v1, v2);
         assert_ne!(v1, v3);
+    }
+
+    #[test]
+    fn test_length() {
+        let v1 = Vector2 { x: 0.0f32, y: 3.0f32 };
+
+        assert_eq!(v1.length_squared(), 9.0);
+        assert_eq!(v1.length(), 3.0);
+        assert_ne!(v1.length(), 2.0);
+    }
+
+    #[test]
+    fn test_is_nan() {
+        let v1 = Vector2 { x: 0.0f32, y: Float::nan() };
+        let v2 = Vector2 { x: 0.0f32, y: 0.0f32 };
+
+        assert!(v1.has_nans());
+        assert!(!v2.has_nans());
     }
 }
 

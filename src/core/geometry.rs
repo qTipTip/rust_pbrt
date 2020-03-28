@@ -112,8 +112,8 @@ mod vector2_tests {
         let v2 = Vector2 { x: 2.0f32, y: 6.0f32 };
         let v3 = Vector2 { x: 1.9f32, y: 6.0f32 };
 
-        v1 * constant;
+        v1 *= constant;
         assert_eq!(v1, v2);
-        assert_ne!(v1, v2);
+        assert_ne!(v1, v3);
     }
 }

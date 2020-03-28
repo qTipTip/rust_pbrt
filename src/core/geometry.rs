@@ -7,13 +7,6 @@ pub struct Vector2<T> {
     pub y: T,
 }
 
-#[derive(Debug, PartialEq, Copy, Clone)]
-pub struct Vector3<T> {
-    pub x: T,
-    pub y: T,
-    pub z: T,
-}
-
 // the where clause can alternatively be written as impl<T: Copy + Add<T, Output=T>
 // I.e, this is implemented only for generic types implementing Copy and Add:T->T.
 impl<T> ops::Add for Vector2<T> where T: Copy + ops::Add<T, Output=T> {
@@ -116,4 +109,11 @@ mod vector2_tests {
         assert_eq!(v1, v2);
         assert_ne!(v1, v3);
     }
+}
+
+#[derive(Debug, PartialEq, Copy, Clone)]
+pub struct Vector3<T> {
+    pub x: T,
+    pub y: T,
+    pub z: T,
 }

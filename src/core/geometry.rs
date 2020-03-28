@@ -46,7 +46,7 @@ impl<T> ops::SubAssign for Vector2<T> where T: ops::SubAssign {
     }
 }
 
-impl<T> ops::MulAssign<T> for Vector<T> where T: Copy + ops::MulAssign {
+impl<T> ops::MulAssign<T> for Vector2<T> where T: Copy + ops::MulAssign {
     fn mul_assign(&mut self, constant: T) {
         self.x *= constant;
         self.y *= constant;

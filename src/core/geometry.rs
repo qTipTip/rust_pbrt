@@ -62,7 +62,7 @@ impl<T> ops::Mul<T> for Vector2<T> where T: Float {
     type Output = Vector2<T>;
 
     fn mul(self, rhs: T) -> Self::Output {
-        Vector2 { x: self.x * rhs, y: self.x * rhs }
+        Vector2 { x: self.x * rhs, y: self.y * rhs }
     }
 }
 
@@ -132,6 +132,18 @@ mod vector2_tests {
 
         assert_eq!(v1, v3);
         assert_ne!(v1, v4);
+    }
+
+
+    #[test]
+    fn test_mul() {
+        let v1 = Vector2 { x: 1.0f32, y: 3.0f32 };
+        let constant: f32 = 2.0f32;
+        let v2 = Vector2 { x: 2.0f32, y: 6.0f32 };
+        let v3 = Vector2 { x: 1.9f32, y: 6.0f32 };
+
+        assert_eq!(v1 * constant, v2);
+        assert_ne!(v1 * constant, v3);
     }
 
     #[test]

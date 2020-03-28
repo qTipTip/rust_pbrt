@@ -2,7 +2,7 @@ use std::ops;
 use num_traits::{Float, NumCast};
 use std::fmt::Debug;
 use std::num;
-use std::ops::Div;
+use std::ops::{Div, Mul};
 
 // We derive from PartialEq in order to use assert_eqs in tests.
 #[derive(Debug, PartialEq, Copy, Clone)]
@@ -58,6 +58,14 @@ impl<T> ops::SubAssign for Vector2<T> where T: ops::SubAssign {
     }
 }
 
+impl<T> ops::Mul<T> for Vector2<T> where T: Float {
+    type Output = Vector2<T>;
+
+    fn mul(self, rhs: T) -> Self::Output {
+        Vector2 { x: self.x * rhs, y: self.x * rhs }
+    }
+}
+
 impl<T> ops::MulAssign<T> for Vector2<T> where T: Copy + ops::MulAssign {
     fn mul_assign(&mut self, constant: T) {
         self.x *= constant;
@@ -69,7 +77,7 @@ impl<T> ops::Div<T> for Vector2<T> where T: Float {
     type Output = Vector2<T>;
 
     fn div(self, rhs: T) -> Vector2<T> {
-        Vector2 { x: self.x * rhs.recip(), y: self.y * rhs.recip() }
+        self * rhs.recip()
     }
 }
 

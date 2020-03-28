@@ -75,4 +75,28 @@ mod vector2_tests {
         assert_eq!(v1, v3);
         assert_ne!(v1, v4);
     }
+
+    #[test]
+    fn test_sub() {
+        let v1 = Vector2 { x: 2.0f32, y: 3.0f32 };
+        let v2 = Vector2 { x: 1.0f32, y: -1.0f32 };
+        let v3 = Vector2 { x: 1.0f32, y: 4.0f32 };
+        let v4 = Vector2 { x: 0.0f32, y: 0.0f32 };
+
+        assert_eq!(v1 - v2, v3);
+        assert_ne!(v1 - v2, v4);
+    }
+
+    #[test]
+    fn test_sub_assign() {
+        let mut v1 = Vector2 { x: 2.0f32, y: 3.0f32 };
+        let v2 = Vector2 { x: 1.0f32, y: -1.0f32 };
+        let v3 = Vector2 { x: 1.0f32, y: 4.0f32 };
+        let v4 = Vector2 { x: 0.0f32, y: 0.0f32 };
+
+        v1 -= v2;
+
+        assert_eq!(v1, v3);
+        assert_ne!(v1, v4);
+    }
 }

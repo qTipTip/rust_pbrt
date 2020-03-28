@@ -1,4 +1,5 @@
 use std::ops;
+use std::num;
 
 // We derive from PartialEq in order to use assert_eqs in tests.
 #[derive(Debug, PartialEq, Copy, Clone)]
@@ -6,6 +7,17 @@ pub struct Vector2<T> {
     pub x: T,
     pub y: T,
 }
+
+impl<T> Vector2<T> {
+    pub fn length_squared(self) -> T where T: ops::Mult<T, Output=T> + ops::Add<T, Output=T> + Copy {
+        self.x * self.x + self.y * self.y
+    }
+
+    pub fn length(self) -> T where T: num::Float {
+        self.length_squared().sqrt()
+    }
+}
+
 
 // the where clause can alternatively be written as impl<T: Copy + Add<T, Output=T>
 // I.e, this is implemented only for generic types implementing Copy and Add:T->T.

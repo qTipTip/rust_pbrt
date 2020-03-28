@@ -24,12 +24,29 @@ impl<T> ops::Add for Vector2<T> where T: Copy + ops::Add<T, Output=T> {
     }
 }
 
-impl<T> ops::AddAssign for Vector2<T> where T: AddAssign {
+// Note that we require self to be mutable in order to alter its internal state.
+impl<T> ops::AddAssign for Vector2<T> where T: ops::AddAssign {
     fn add_assign(&mut self, rhs: Vector2<T>) {
         self.x += rhs.x;
         self.y += rhs.y;
     }
 }
+
+impl<T> ops::Sub for Vector2<T> where T: Copy + ops::Sub<T, Output=T> {
+    type Output = Vector2<T>;
+    fn sub(self, rhs: Vector2<T>) -> Vector2<T> {
+        Vector2 { x: self.x - rhs.x, y: self.y - rhs.y }
+    }
+}
+
+// Note that we require self to be mutable in order to alter its internal state.
+impl<T> ops::SubAssign for Vector2<T> where T: ops::SubAssign {
+    fn sub_assign(&mut self, rhs: Vector2<T>) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+    }
+}
+
 
 #[cfg(test)]
 mod vector2_tests {

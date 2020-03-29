@@ -1,5 +1,6 @@
 use std::fmt::Debug;
 use std::ops;
+
 use num_traits::Float;
 
 pub type Vector2i = Vector2<i32>;
@@ -10,6 +11,13 @@ pub type Vector2f = Vector2<f32>;
 pub struct Vector2<T> {
     pub x: T,
     pub y: T,
+}
+
+impl<T> Vector2<T> {
+    pub fn new(x: T, y: T) -> Self {
+        assert!(!(x.is_nan() || y.is_nan()));
+        Vector2 { x: x, y: y }
+    }
 }
 
 impl<T> Vector2<T> {

@@ -117,13 +117,17 @@ impl<T> ops::Index<u32> for Vector2<T> {
     }
 }
 
+pub fn dot<T>(a: Vector2<T>, b: Vector2<T>) -> T where T: ops::Mul<Output=T> + ops::Add<Output=T> {
+    a.x * b.x + a.y * b.y
+}
+
 #[cfg(test)]
 mod vector2_tests {
     use std::panic;
 
     use num_traits::Float;
 
-    use crate::core::geometry::Vector2;
+    use crate::core::geometry::{dot, Vector2};
 
     #[test]
     fn test_constructor_nan_float() {
@@ -265,6 +269,12 @@ mod vector2_tests {
         let v2 = Vector2 { x: 1, y: 2 };
 
         assert_eq!(v1.abs(), v2);
+    }
+
+    #[test]
+    fn test_dot() {
+        let v1 = Vector2 { x: -1.0, y: 2.0 };
+        assert_eq!(dot(v1, v1), 5.0);
     }
 }
 

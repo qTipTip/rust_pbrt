@@ -100,7 +100,7 @@ impl<T> ops::Index<u32> for Vector2<T> {
         match index {
             0 => &self.x,
             1 => &self.y,
-            _ => &self[index % 2],
+            _ => panic!("Index out of bounds for Vector2"),
         }
     }
 }
@@ -231,7 +231,10 @@ mod vector2_tests {
 
         assert_eq!(v1[0], v1.x);
         assert_eq!(v1[1], v1.y);
-        assert_eq!(v1[2], v1.x);
+
+        let result_should_panic = panic::catch_unwind(||
+            v1[3]);
+        assert!(result_should_panic.is_err());
     }
 }
 

@@ -1,7 +1,9 @@
 use std::fmt::Debug;
 use std::ops;
-
 use num_traits::Float;
+
+pub type Vector2i = Vector2<i32>;
+pub type Vector2f = Vector2<f32>;
 
 // We derive from PartialEq in order to use assert_eqs in tests.
 #[derive(Debug, PartialEq, Copy, Clone)]

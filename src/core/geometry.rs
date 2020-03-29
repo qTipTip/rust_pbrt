@@ -35,6 +35,10 @@ impl<T> Vector2<T> {
     pub fn has_nans(self) -> bool where T: num_traits::Float {
         self.x.is_nan() || self.y.is_nan()
     }
+
+    pub fn abs(self) -> Vector2<T> where T: num_traits::sign::Signed {
+        Vector2 { x: self.x.abs(), y: self.y.abs() }
+    }
 }
 
 
@@ -115,10 +119,11 @@ impl<T> ops::Index<u32> for Vector2<T> {
 
 #[cfg(test)]
 mod vector2_tests {
+    use std::panic;
+
     use num_traits::Float;
 
     use crate::core::geometry::Vector2;
-    use std::panic;
 
     #[test]
     fn test_constructor_nan_float() {
@@ -252,6 +257,14 @@ mod vector2_tests {
         let result_should_panic = panic::catch_unwind(||
             v1[3]);
         assert!(result_should_panic.is_err());
+    }
+
+    #[test]
+    fn test_abs() {
+        let v1 = Vector2 { x: -1, y: 2 };
+        let v2 = Vector2 { x: 1, y: 2 };
+
+        assert_eq!(v1.abs(), v2);
     }
 }
 

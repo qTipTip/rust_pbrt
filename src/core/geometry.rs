@@ -39,6 +39,10 @@ impl<T> Vector2<T> {
     pub fn abs(self) -> Vector2<T> where T: num_traits::sign::Signed {
         Vector2 { x: self.x.abs(), y: self.y.abs() }
     }
+
+    pub fn dot(self, rhs: Vector2<T>) -> T where T: ops::Mul<Output=T> + ops::Add<Output=T> {
+        self.x * rhs.x + self.y * rhs.y
+    }
 }
 
 
@@ -275,6 +279,7 @@ mod vector2_tests {
     fn test_dot() {
         let v1 = Vector2 { x: -1.0, y: 2.0 };
         assert_eq!(dot(v1, v1), 5.0);
+        assert_eq!(v1.dot(v1), 5.0);
     }
 }
 

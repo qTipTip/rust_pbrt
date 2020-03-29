@@ -2,7 +2,7 @@ use std::ops;
 use num_traits::{Float, NumCast};
 use std::fmt::Debug;
 use std::num;
-use std::ops::{Div, Mul};
+use std::ops::{Div, Mul, Index};
 
 // We derive from PartialEq in order to use assert_eqs in tests.
 #[derive(Debug, PartialEq, Copy, Clone)]
@@ -78,6 +78,18 @@ impl<T> ops::Div<T> for Vector2<T> where T: Float {
 
     fn div(self, rhs: T) -> Vector2<T> {
         self * rhs.recip()
+    }
+}
+
+impl<T> Index<u32> for Vector2<T> {
+    type Output = T;
+
+    fn index(&self, index: u32) -> &Self::Output {
+        match index {
+            0 => &self.x,
+            1 => &self.y,
+            _ => &self[index % 2],
+        }
     }
 }
 
@@ -183,6 +195,15 @@ mod vector2_tests {
 
         assert!(v1.has_nans());
         assert!(!v2.has_nans());
+    }
+
+    #[test]
+    fn test_index() {
+        let v1 = Vector2 { x: 1, y: 2 };
+
+        assert_eq!(v1[0], v1.x);
+        assert_eq!(v1[1], v1.y);
+        assert_eq!(v1[2], v1.x);
     }
 }
 

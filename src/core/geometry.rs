@@ -93,6 +93,14 @@ impl<T> ops::Div<T> for Vector2<T> where T: Float {
     }
 }
 
+impl<T> ops::Neg for Vector2<T> where T: Copy + ops::Neg<Output=T> {
+    type Output = Vector2<T>;
+
+    fn neg(self) -> Self::Output {
+        Vector2 { x: -self.x, y: -self.y }
+    }
+}
+
 impl<T> ops::Index<u32> for Vector2<T> {
     type Output = T;
 
@@ -205,6 +213,15 @@ mod vector2_tests {
 
         assert_eq!(v1 / 2.0, v2);
         assert_ne!(v1 / 2.0, v1);
+    }
+
+    #[test]
+    fn test_neg() {
+        let v1 = Vector2 { x: 1.0f32, y: 1.0f32 };
+
+        assert_eq!(-v1, v1 * (-1.0));
+        assert_eq!(-(-v1), v1);
+        assert_ne!(-v1, v1);
     }
 
     #[test]

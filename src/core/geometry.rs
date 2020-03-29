@@ -13,7 +13,8 @@ pub struct Vector2<T> {
     pub y: T,
 }
 
-impl<T> Vector2<T> {
+// This NaN-check is only implemented for Float-types.
+impl<T> Vector2<T> where T: Float {
     pub fn new(x: T, y: T) -> Self {
         assert!(!(x.is_nan() || y.is_nan()));
         Vector2 { x: x, y: y }
@@ -107,6 +108,12 @@ mod vector2_tests {
     use num_traits::Float;
 
     use crate::core::geometry::Vector2;
+
+    #[test]
+    fn test_constructor() {
+        let v1 = Vector2 { x: 2.0f32, y: 3.0f32 };
+        let v2 = Vector2 { x: Float::nan(), y: 3.2f32 };
+    }
 
     #[test]
     fn test_add() {

@@ -1,8 +1,7 @@
-use std::ops;
-use num_traits::{Float, NumCast};
 use std::fmt::Debug;
-use std::num;
-use std::ops::{Div, Mul, Index};
+use std::ops;
+
+use num_traits::Float;
 
 // We derive from PartialEq in order to use assert_eqs in tests.
 #[derive(Debug, PartialEq, Copy, Clone)]
@@ -81,7 +80,7 @@ impl<T> ops::Div<T> for Vector2<T> where T: Float {
     }
 }
 
-impl<T> Index<u32> for Vector2<T> {
+impl<T> ops::Index<u32> for Vector2<T> {
     type Output = T;
 
     fn index(&self, index: u32) -> &Self::Output {
@@ -95,8 +94,9 @@ impl<T> Index<u32> for Vector2<T> {
 
 #[cfg(test)]
 mod vector2_tests {
-    use crate::core::geometry::Vector2;
     use num_traits::Float;
+
+    use crate::core::geometry::Vector2;
 
     #[test]
     fn test_add() {

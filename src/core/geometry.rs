@@ -49,6 +49,14 @@ impl<T> Vector2<T> {
     pub fn normalize(self) -> Vector2<T> where T: num_traits::Float {
         self / self.length()
     }
+
+    pub fn min_component(self) -> T where T: num_traits::Float {
+        self.x.min(self.y)
+    }
+
+    pub fn max_component(self) -> T where T: num_traits::Float {
+        self.x.max(self.y)
+    }
 }
 
 
@@ -293,6 +301,15 @@ mod vector2_tests {
         let v2 = v1.normalize();
 
         assert_eq!(v2.length(), 1.0);
+    }
+
+
+    #[test]
+    fn test_min_max_component() {
+        let v1 = Vector2 { x: 1.0, y: 2.0 };
+
+        assert_eq!(v1.max_component(), 2.0);
+        assert_eq!(v1.min_component(), 1.0);
     }
 }
 

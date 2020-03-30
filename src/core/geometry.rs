@@ -45,6 +45,10 @@ impl<T> Vector2<T> {
     pub fn dot(self, rhs: Vector2<T>) -> T where T: ops::Mul<Output=T> + ops::Add<Output=T> {
         self.x * rhs.x + self.y * rhs.y
     }
+
+    pub fn normalize(self) -> Vector2<T> where T: num_traits::Float {
+        self / self.length()
+    }
 }
 
 
@@ -282,6 +286,12 @@ mod vector2_tests {
         let v1 = Vector2 { x: -1.0, y: 2.0 };
         assert_eq!(vec2_dot(v1, v1), 5.0);
         assert_eq!(v1.dot(v1), 5.0);
+    }
+    fn test_normalize() {
+        let v1 = Vector2 { x: 0.0, y: 3.0};
+        let v2 = v1.normalize();
+
+        assert_eq!(v2.length(), 1.0);
     }
 }
 

@@ -287,8 +287,9 @@ mod vector2_tests {
         assert_eq!(vec2_dot(v1, v1), 5.0);
         assert_eq!(v1.dot(v1), 5.0);
     }
+
     fn test_normalize() {
-        let v1 = Vector2 { x: 0.0, y: 3.0};
+        let v1 = Vector2 { x: 0.0, y: 3.0 };
         let v2 = v1.normalize();
 
         assert_eq!(v2.length(), 1.0);
@@ -335,6 +336,14 @@ impl<T> Vector3<T> {
 
     pub fn normalize(self) -> Vector3<T> where T: num_traits::Float {
         self / self.length()
+    }
+
+    pub fn min_component(self) -> T where T: num_traits::Float {
+        self.x.min(self.y.min(self.z))
+    }
+
+    pub fn max_component(self) -> T where T: num_traits::Float {
+        self.x.max(self.y.max(self.z))
     }
 }
 
@@ -585,5 +594,13 @@ mod vector3_tests {
         let v2 = v1.normalize();
 
         assert_eq!(v2.length(), 1.0);
+    }
+
+    #[test]
+    fn test_min_max_component() {
+        let v1 = Vector3 { x: 1.0, y: 2.0, z: 3.0 };
+
+        assert_eq!(v1.max_component(), 3.0);
+        assert_eq!(v1.min_component(), 1.0);
     }
 }

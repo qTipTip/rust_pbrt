@@ -296,13 +296,13 @@ mod vector2_tests {
         assert_eq!(v1.dot(v1), 5.0);
     }
 
+    #[test]
     fn test_normalize() {
         let v1 = Vector2 { x: 0.0, y: 3.0 };
         let v2 = v1.normalize();
 
         assert_eq!(v2.length(), 1.0);
     }
-
 
     #[test]
     fn test_min_max_component() {

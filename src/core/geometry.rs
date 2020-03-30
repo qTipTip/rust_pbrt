@@ -1,7 +1,7 @@
-use std::{ops};
 use std::fmt::Debug;
+use std::ops;
 
-use num_traits::{Float};
+use num_traits::Float;
 
 pub type Vector2i = Vector2<i32>;
 pub type Vector2f = Vector2<f32>;
@@ -390,6 +390,10 @@ impl<T> Vector3<T> {
             2
         }
     }
+
+    pub fn permute(self, i: u32, j: u32, k: u32) -> Vector3<T> where T: Copy {
+        Vector3 { x: self[i], y: self[j], z: self[k] }
+    }
 }
 
 
@@ -655,5 +659,14 @@ mod vector3_tests {
 
         assert_eq!(v1.max_dimension(), 2);
         assert_eq!(v1.min_dimension(), 0);
+    }
+
+    #[test]
+    fn test_permute() {
+        let v1 = Vector3 { x: 0, y: 1, z: 3 };
+        let v2 = Vector3 { x: 1, y: 3, z: 0 };
+
+        assert_eq!(v1.permute(1, 2, 0), v2);
+        assert_ne!(v1.permute(1, 2, 0), v1);
     }
 }

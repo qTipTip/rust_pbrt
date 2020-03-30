@@ -412,7 +412,7 @@ mod vector3_tests {
 
     use num_traits::Float;
 
-    use crate::core::geometry::{vec2_dot, Vector2, Vector3, vec3_dot};
+    use crate::core::geometry::{vec2_dot, vec3_dot, Vector2, Vector3};
 
     #[test]
     fn test_constructor_nan_float() {

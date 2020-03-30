@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 use std::ops;
 
-use num_traits::Float;
+use num_traits::{Float, Signed};
 
 pub type Vector2i = Vector2<i32>;
 pub type Vector2f = Vector2<f32>;
@@ -480,13 +480,17 @@ pub fn vec3_dot<T>(a: Vector3<T>, b: Vector3<T>) -> T where T: ops::Mul<Output=T
     a.x * b.x + a.y * b.y + a.z + b.z
 }
 
+pub fn vec3_absdot<T>(v1: Vector3<T>, b: Vector3<T>) -> T where T: ops::Mul<Output=T> + ops::Add<Output=T> + Signed {
+    vec3_dot(v1, b).abs()
+}
+
 #[cfg(test)]
 mod vector3_tests {
     use std::panic;
 
     use num_traits::Float;
 
-    use crate::core::geometry::{vec2_dot, vec3_dot, Vector2, Vector3};
+    use crate::core::geometry::{vec2_dot, vec3_dot, Vector2, Vector3, vec3_absdot};
 
     #[test]
     fn test_constructor_nan_float() {
@@ -636,6 +640,15 @@ mod vector3_tests {
         assert_eq!(vec3_dot(v1, v1), 5.0);
         assert_eq!(v1.dot(v1), 5.0);
     }
+
+    #[test]
+    fn test_abs_dot() {
+        let v1 = Vector3 { x: -1.0, y: 1.0, z: 0.0 };
+        let v2 = Vector3 { x: 1.0, y: 0.0, z: 0.0 };
+        assert_eq!(vec3_dot(v1, v2), -1.0);
+        assert_eq!(vec3_absdot(v1, v2), 1.0);
+    }
+
 
     #[test]
     fn test_normalize() {

@@ -1,7 +1,7 @@
+use std::{ops};
 use std::fmt::Debug;
-use std::ops;
 
-use num_traits::Float;
+use num_traits::{Float};
 
 pub type Vector2i = Vector2<i32>;
 pub type Vector2f = Vector2<f32>;
@@ -362,6 +362,34 @@ impl<T> Vector3<T> {
     pub fn max_component(self) -> T where T: num_traits::Float {
         self.x.max(self.y.max(self.z))
     }
+
+    pub fn min_dimension(self) -> u32 where T: PartialOrd {
+        if self.x < self.y {
+            if self.x < self.z {
+                0
+            } else {
+                2
+            }
+        } else if self.y < self.z {
+            1
+        } else {
+            2
+        }
+    }
+
+    pub fn max_dimension(self) -> u32 where T: PartialOrd {
+        if self.x > self.y {
+            if self.x > self.z {
+                0
+            } else {
+                2
+            }
+        } else if self.y > self.z {
+            1
+        } else {
+            2
+        }
+    }
 }
 
 
@@ -619,5 +647,13 @@ mod vector3_tests {
 
         assert_eq!(v1.max_component(), 3.0);
         assert_eq!(v1.min_component(), 1.0);
+    }
+
+    #[test]
+    fn test_min_max_dimensions() {
+        let v1 = Vector3 { x: 1, y: 2, z: 3 };
+
+        assert_eq!(v1.max_dimension(), 2);
+        assert_eq!(v1.min_dimension(), 0);
     }
 }

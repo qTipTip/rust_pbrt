@@ -406,3 +406,160 @@ pub fn vec3_dot<T>(a: Vector3<T>, b: Vector3<T>) -> T where T: ops::Mul<Output=T
     a.x * b.x + a.y * b.y + a.z + b.z
 }
 
+#[cfg(test)]
+mod vector3_tests {
+    use std::panic;
+
+    use num_traits::Float;
+
+    use crate::core::geometry::{vec2_dot, Vector2, Vector3, vec3_dot};
+
+    #[test]
+    fn test_constructor_nan_float() {
+        let result_should_pass = panic::catch_unwind(||
+            Vector3::new(3.2f32, 3.1f32, 1.0f32)
+        );
+        let result_should_panic = panic::catch_unwind(||
+            Vector3::new(Float::nan(), 3.1f32, 1.0f32)
+        );
+
+
+        assert!(result_should_pass.is_ok());
+        assert!(result_should_panic.is_err());
+    }
+
+    #[test]
+    fn test_add() {
+        let v1 = Vector3 { x: 2.0f32, y: 3.0f32, z: 1.0f32 };
+        let v2 = Vector3 { x: 1.0f32, y: -1.0f32, z: 1.0f32 };
+        let v3 = Vector3 { x: 3.0f32, y: 2.0f32, z: 2.0f32 };
+        let v4 = Vector3 { x: 0.0f32, y: 0.0f32, z: 1.0f32 };
+
+        assert_eq!(v1 + v2, v3);
+        assert_ne!(v1 + v2, v4);
+    }
+
+    #[test]
+    fn test_add_assign() {
+        let mut v1 = Vector3 { x: 2.0f32, y: 3.0f32, z: 1.0f32 };
+        let v2 = Vector3 { x: 1.0f32, y: -1.0f32, z: 1.0f32 };
+        let v3 = Vector3 { x: 3.0f32, y: 2.0f32, z: 2.0f32 };
+        let v4 = Vector3 { x: 0.0f32, y: 0.0f32, z: 1.0f32 };
+
+        v1 += v2;
+
+        assert_eq!(v1, v3);
+        assert_ne!(v1, v4);
+    }
+
+    #[test]
+    fn test_sub() {
+        let v1 = Vector3 { x: 2.0f32, y: 3.0f32, z: 1.0f32 };
+        let v2 = Vector3 { x: 1.0f32, y: -1.0f32, z: 1.0f32 };
+        let v3 = Vector3 { x: 1.0f32, y: 4.0f32, z: 0.0f32 };
+        let v4 = Vector3 { x: 0.0f32, y: 0.0f32, z: 1.0f32 };
+
+        assert_eq!(v1 - v2, v3);
+        assert_ne!(v1 - v2, v4);
+    }
+
+    #[test]
+    fn test_sub_assign() {
+        let mut v1 = Vector3 { x: 2.0f32, y: 3.0f32, z: 1.0f32 };
+        let v2 = Vector3 { x: 1.0f32, y: -1.0f32, z: 1.0f32 };
+        let v3 = Vector3 { x: 1.0f32, y: 4.0f32, z: 0.0f32 };
+        let v4 = Vector3 { x: 0.0f32, y: 0.0f32, z: 1.0f32 };
+
+        v1 -= v2;
+
+        assert_eq!(v1, v3);
+        assert_ne!(v1, v4);
+    }
+
+
+    #[test]
+    fn test_mul() {
+        let v1 = Vector3 { x: 1.0f32, y: 3.0f32, z: 1.0f32 };
+        let constant: f32 = 2.0f32;
+        let v2 = Vector3 { x: 2.0f32, y: 6.0f32, z: 2.0f32 };
+        let v3 = Vector3 { x: 1.9f32, y: 6.0f32, z: 1.0f32 };
+
+        assert_eq!(v1 * constant, v2);
+        assert_ne!(v1 * constant, v3);
+    }
+
+    #[test]
+    fn test_mul_assign() {
+        let mut v1 = Vector3 { x: 1.0f32, y: 3.0f32, z: 1.0f32 };
+        let constant: f32 = 2.0f32;
+        let v2 = Vector3 { x: 2.0f32, y: 6.0f32, z: 2.0f32 };
+        let v3 = Vector3 { x: 1.9f32, y: 6.0f32, z: 1.0f32 };
+
+        v1 *= constant;
+        assert_eq!(v1, v2);
+        assert_ne!(v1, v3);
+    }
+
+    #[test]
+    fn test_div() {
+        let v1 = Vector3 { x: 1.0f32, y: 1.0f32, z: 1.0f32 };
+        let v2 = Vector3 { x: 0.5f32, y: 0.5f32, z: 0.5f32 };
+
+        assert_eq!(v1 / 2.0, v2);
+        assert_ne!(v1 / 2.0, v1);
+    }
+
+    #[test]
+    fn test_neg() {
+        let v1 = Vector3 { x: 1.0f32, y: 1.0f32, z: 1.0f32 };
+        assert_eq!(-v1, v1 * (-1.0));
+        assert_eq!(-(-v1), v1);
+        assert_ne!(-v1, v1);
+    }
+
+    #[test]
+    fn test_length() {
+        let v1 = Vector3 { x: 0.0f32, y: 3.0f32, z: 0.0f32 };
+
+        assert_eq!(v1.length_squared(), 9.0);
+        assert_eq!(v1.length(), 3.0);
+        assert_ne!(v1.length(), 2.0);
+    }
+
+    #[test]
+    fn test_is_nan() {
+        let v1 = Vector3 { x: 0.0f32, y: Float::nan(), z: 1.0f32 };
+        let v2 = Vector3 { x: 0.0f32, y: 0.0f32, z: 1.0f32 };
+
+        assert!(v1.has_nans());
+        assert!(!v2.has_nans());
+    }
+
+    #[test]
+    fn test_index() {
+        let v1 = Vector3 { x: 1, y: 2, z: 3 };
+
+        assert_eq!(v1[0], v1.x);
+        assert_eq!(v1[1], v1.y);
+        assert_eq!(v1[2], v1.z);
+
+        let result_should_panic = panic::catch_unwind(||
+            v1[4]);
+        assert!(result_should_panic.is_err());
+    }
+
+    #[test]
+    fn test_abs() {
+        let v1 = Vector3 { x: -1, y: 2, z: 1 };
+        let v2 = Vector3 { x: 1, y: 2, z: 1 };
+
+        assert_eq!(v1.abs(), v2);
+    }
+
+    #[test]
+    fn test_dot() {
+        let v1 = Vector3 { x: -1.0, y: 2.0, z: 0.0 };
+        assert_eq!(vec3_dot(v1, v1), 5.0);
+        assert_eq!(v1.dot(v1), 5.0);
+    }
+}

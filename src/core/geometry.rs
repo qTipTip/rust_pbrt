@@ -320,6 +320,10 @@ impl<T> Vector3<T> {
     pub fn dot(self, rhs: Vector3<T>) -> T where T: ops::Mul<Output=T> + ops::Add<Output=T> {
         self.x * rhs.x + self.y * rhs.y + self.z * rhs.z
     }
+
+    pub fn normalize(self) -> Vector3<T> where T: num_traits::Float {
+        self / self.length()
+    }
 }
 
 
@@ -561,5 +565,13 @@ mod vector3_tests {
         let v1 = Vector3 { x: -1.0, y: 2.0, z: 0.0 };
         assert_eq!(vec3_dot(v1, v1), 5.0);
         assert_eq!(v1.dot(v1), 5.0);
+    }
+
+    #[test]
+    fn test_normalize() {
+        let v1 = Vector3 { x: 0.0, y: 3.0, z: 0.0 };
+        let v2 = v1.normalize();
+
+        assert_eq!(v2.length(), 1.0);
     }
 }
